@@ -11,7 +11,7 @@ docker {
     name "${project.name}:${project.version}"
     files "plugins.txt", "slaveTestJob.xml", 'jenkins.yaml', 'disable-script-security.groovy', 'initialConfig.groovy'
     copySpec.from("jenkins-resources").into("jenkins-resources")
-    tag 'latest', 'tkgregory/jenkins-ecs-agents:latest'
+    tag 'latest', 'alexisg0207/jenkins-ecs-agents:latest'
 }
 
 def environment = [
