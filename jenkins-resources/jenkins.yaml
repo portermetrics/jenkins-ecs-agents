@@ -1,7 +1,7 @@
 jenkins:
   numExecutors: 0
   slaveAgentPort: 50000
-  systemMessage: Jenkins with AWS ECS demo
+  systemMessage: Jenkins Porter
   agentProtocols:
     - JNLP4-connect
   authorizationStrategy:
@@ -26,7 +26,7 @@ jenkins:
             cpu: 1024
             executionRole: ${AGENT_EXECUTION_ROLE_ARN}
             image: jenkins/inbound-agent:alpine
-            label: ecs
+            label: inbound-agent
             launchType: FARGATE
             logDriver: awslogs
             logDriverOptions:
@@ -35,8 +35,44 @@ jenkins:
               - name: awslogs-region
                 value: ${AWS_REGION}
               - name: awslogs-stream-prefix
-                value: jenkins-agent
+                value: inbound-agent
             memoryReservation: 2048
             securityGroups: ${AGENT_SECURITY_GROUP_ID}
             subnets: ${SUBNET_IDS}
-            templateName: jenkins-agent
+            templateName: inbound-agent
+          - assignPublicIp: true
+            cpu: 1024
+            executionRole: ${AGENT_EXECUTION_ROLE_ARN}
+            image: alexisg0207/inbound-agent-sudo
+            label: inbound-agent-with-sudo
+            launchType: FARGATE
+            logDriver: awslogs
+            logDriverOptions:
+              - name: awslogs-group
+                value: ${LOG_GROUP_NAME}
+              - name: awslogs-region
+                value: ${AWS_REGION}
+              - name: awslogs-stream-prefix
+                value: inbound-agent-with-sudo
+            memoryReservation: 2048
+            securityGroups: ${AGENT_SECURITY_GROUP_ID}
+            subnets: ${SUBNET_IDS}
+            templateName: inbound-agent-with-sudo
+          - assignPublicIp: true
+            cpu: 1024
+            executionRole: ${AGENT_EXECUTION_ROLE_ARN}
+            image: alexisg0207/inbound-agent-with-sudo-python
+            label: inbound-agent-with-sudo-python
+            launchType: FARGATE
+            logDriver: awslogs
+            logDriverOptions:
+              - name: awslogs-group
+                value: ${LOG_GROUP_NAME}
+              - name: awslogs-region
+                value: ${AWS_REGION}
+              - name: awslogs-stream-prefix
+                value: inbound-agent-with-sudo-python
+            memoryReservation: 2048
+            securityGroups: ${AGENT_SECURITY_GROUP_ID}
+            subnets: ${SUBNET_IDS}
+            templateName: inbound-agent-with-sudo-python
